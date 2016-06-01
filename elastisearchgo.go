@@ -1,6 +1,8 @@
 package elastisearchgo
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/url"
 )
@@ -22,5 +24,14 @@ func (es *ElastiSearchClient) genRequest(index string, indextype string, setting
 		params.Set(i, j)
 	}
 	request = fmt.Sprintf("%s/%s/%s?%s", es.EndPoint, url.QueryEscape(index), url.QueryEscape(indextype), params.Encode())
-	return es
+	return request
+}
+
+func prettyPrintJson(str string) string {
+	var pstr bytes.Buffer
+	err := json.Indent(&pstr, []byte(str), "", "\t")
+	if err != nil {
+		fmt.Printf("%s", str)
+	}
+	fmt.Printf("%s", pstr)
 }
