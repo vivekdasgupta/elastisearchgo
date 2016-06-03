@@ -12,9 +12,9 @@ type ElastiSearchClient struct {
 }
 
 func NewElastiSearchClient(url string) (es *ElastiSearchClient, err error) {
-	es := new(ElastiSearchClient)
+	es = new(ElastiSearchClient)
 	es.EndPoint = url
-	return es
+	return es, err
 }
 
 func (es *ElastiSearchClient) genRequest(index string, indextype string, settings map[string]string) (request string, err error) {
@@ -24,14 +24,15 @@ func (es *ElastiSearchClient) genRequest(index string, indextype string, setting
 		params.Set(i, j)
 	}
 	request = fmt.Sprintf("%s/%s/%s?%s", es.EndPoint, url.QueryEscape(index), url.QueryEscape(indextype), params.Encode())
-	return request
+	return request, err
 }
 
-func prettyPrintJson(str string) string {
+func PrettyPrintJson(str string) {
 	var pstr bytes.Buffer
 	err := json.Indent(&pstr, []byte(str), "", "\t")
 	if err != nil {
 		fmt.Printf("%s", str)
 	}
 	fmt.Printf("%s", pstr)
+
 }

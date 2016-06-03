@@ -9,7 +9,7 @@ import (
 type IndexSettings struct {
 }
 
-func (es *ElastiSearchClient) CreateIndex(indexname string, settings []byte) (res int, err error) {
+func (es *ElastiSearchClient) CreateIndex(indexname string, settings []byte) (res *http.Response, err error) {
 
 	indexurl := es.EndPoint + "/" + indexname
 	req, err := http.NewRequest("POST", indexurl, bytes.NewBuffer(settings))
@@ -20,5 +20,5 @@ func (es *ElastiSearchClient) CreateIndex(indexname string, settings []byte) (re
 	}
 	fmt.Println("Create Index Status:", resp.Status)
 
-	return
+	return resp, err
 }
